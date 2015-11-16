@@ -46,16 +46,9 @@ public final class SwitchYardSecurityConfigAdd extends AbstractAddStepHandler {
     private SwitchYardSecurityConfigAdd() {}
 
     @Override
-    protected void populateModel(final ModelNode operation, final Resource resource) {
-        final ModelNode model = resource.getModel();
-        populateModel(operation, model);
-    }
-
-    @Override
-    protected void populateModel(ModelNode operation, ModelNode subModel) {
-        if (operation.hasDefined(CommonAttributes.PROPERTIES)) {
-            subModel.get(CommonAttributes.PROPERTIES).set(operation.get(CommonAttributes.PROPERTIES));
-        }
+    protected void populateModel(ModelNode operation, ModelNode model) throws OperationFailedException {
+        Attributes.PROPERTIES.validateAndSet(operation, model);
+        Attributes.IDENTIFIER.validateAndSet(operation, model);
     }
 
     @Override

@@ -156,12 +156,12 @@
             <groupId>org.jboss</groupId>
             <artifactId>jboss-dmr</artifactId>
         </dependency>
-        <dependency>
+        <!--dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-clustering-infinispan</artifactId>
-        </dependency>
+        </dependency-->
         <dependency>
-            <groupId>org.wildfly</groupId>
+            <groupId>org.wildfly.core</groupId>
             <artifactId>wildfly-controller</artifactId>
         </dependency>
         <dependency>
@@ -169,7 +169,7 @@
             <artifactId>wildfly-ee</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wildfly</groupId>
+            <groupId>org.wildfly.core</groupId>
             <artifactId>wildfly-logging</artifactId>
         </dependency>
         <dependency>
@@ -177,11 +177,11 @@
             <artifactId>wildfly-naming</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wildfly</groupId>
+            <groupId>org.wildfly.core</groupId>
             <artifactId>wildfly-network</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wildfly</groupId>
+            <groupId>org.wildfly.core</groupId>
             <artifactId>wildfly-server</artifactId>
         </dependency>
         <dependency>
