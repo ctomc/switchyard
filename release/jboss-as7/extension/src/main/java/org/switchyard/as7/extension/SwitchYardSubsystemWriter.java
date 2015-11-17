@@ -14,7 +14,6 @@
 package org.switchyard.as7.extension;
 
 import java.util.Set;
-
 import javax.xml.stream.XMLStreamException;
 
 import org.jboss.as.controller.persistence.SubsystemMarshallingContext;
@@ -45,6 +44,9 @@ final class SwitchYardSubsystemWriter implements XMLElementWriter<SubsystemMarsh
     public void writeContent(final XMLExtendedStreamWriter writer, final SubsystemMarshallingContext context) throws XMLStreamException {
         context.startSubsystemElement(SwitchYardExtension.NAMESPACE, false);
         ModelNode node = context.getModelNode();
+        if (!node.isDefined()) {
+            return;
+        }
         if (node.hasDefined(CommonAttributes.SOCKET_BINDING)) {
             ModelNode socketNames = node.get(CommonAttributes.SOCKET_BINDING);
             writer.writeEmptyElement(Element.SOCKET_BINDING.getLocalName());

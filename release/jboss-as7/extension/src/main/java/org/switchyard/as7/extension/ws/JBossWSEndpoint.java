@@ -25,10 +25,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.ws.WebServiceException;
 
-import org.jboss.as.security.plugins.SecurityDomainContext;
 import org.jboss.as.server.CurrentServiceContainer;
 import org.jboss.as.webservices.publish.EndpointPublisherImpl;
-import org.jboss.as.webservices.security.SecurityDomainContextAdaptor;
 import org.jboss.as.webservices.util.WSServices;
 import org.jboss.logging.Logger;
 import org.jboss.metadata.parser.jbossweb.JBossWebMetaDataParser;

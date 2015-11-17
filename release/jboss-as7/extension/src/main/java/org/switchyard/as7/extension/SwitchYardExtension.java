@@ -35,6 +35,7 @@ import org.jboss.as.controller.SubsystemRegistration;
 import org.jboss.as.controller.descriptions.DescriptionProvider;
 import org.jboss.as.controller.descriptions.ModelDescriptionConstants;
 import org.jboss.as.controller.descriptions.StandardResourceDescriptionResolver;
+import org.jboss.as.controller.operations.common.GenericSubsystemDescribeHandler;
 import org.jboss.as.controller.parsing.ExtensionParsingContext;
 import org.jboss.as.controller.registry.ManagementResourceRegistration;
 import org.jboss.dmr.ModelNode;
@@ -100,13 +101,13 @@ public class SwitchYardExtension implements Extension {
 
         ResourceBuilder securityConfigsResource = ResourceBuilder.Factory.create(SECURITY_CONFIG_PATH, getResourceDescriptionResolver(SECURITY_CONFIG))
                 .setAddOperation(SwitchYardSecurityConfigAdd.INSTANCE)
-                .setRemoveOperation(SwitchYardSecurityConfigRemove.INSTANCE)
+                .setRemoveOperation(ReloadRequiredRemoveStepHandler.INSTANCE)
                 .addReadWriteAttribute(Attributes.IDENTIFIER, null, new ReloadRequiredWriteAttributeHandler(Attributes.IDENTIFIER))
                 .addReadWriteAttribute(Attributes.PROPERTIES, null, new ReloadRequiredWriteAttributeHandler(Attributes.PROPERTIES));
 
         ResourceBuilder modulesResource = ResourceBuilder.Factory.create(MODULE_PATH, getResourceDescriptionResolver(MODULE))
                 .setAddOperation(SwitchYardModuleAdd.INSTANCE)
-                .setRemoveOperation(SwitchYardModuleRemove.INSTANCE)
+                .setRemoveOperation(ReloadRequiredRemoveStepHandler.INSTANCE)
                 //.addReadWriteAttribute(Attributes.IDENTIFIER, null, new ReloadRequiredWriteAttributeHandler(Attributes.IDENTIFIER)) // not an attribute but part of address
                 .addReadWriteAttribute(Attributes.IMPLCLASS, null, new ReloadRequiredWriteAttributeHandler(Attributes.IMPLCLASS))
                 .addReadWriteAttribute(Attributes.PROPERTIES, null, new ReloadRequiredWriteAttributeHandler(Attributes.PROPERTIES));
@@ -115,11 +116,11 @@ public class SwitchYardExtension implements Extension {
                 .setAddOperation(SwitchYardExtensionAdd.INSTANCE)
                 .setRemoveOperation(ReloadRequiredRemoveStepHandler.INSTANCE);
 
-        ResourceDefinition subsystemResource = ResourceBuilder.Factory.createSubsystemRoot(SUBSYSTEM_PATH, getResourceDescriptionResolver(), SwitchYardSubsystemAdd.INSTANCE, SwitchYardSubsystemRemove.INSTANCE)
+        ResourceDefinition subsystemResource = ResourceBuilder.Factory.createSubsystemRoot(SUBSYSTEM_PATH, getResourceDescriptionResolver(), SwitchYardSubsystemAdd.INSTANCE, ReloadRequiredRemoveStepHandler.INSTANCE)
                 .addReadWriteAttribute(Attributes.SOCKET_BINDING, null, new ReloadRequiredWriteAttributeHandler(Attributes.SOCKET_BINDING))
                 .addReadWriteAttribute(Attributes.PROPERTIES, null, new ReloadRequiredWriteAttributeHandler(Attributes.PROPERTIES))
                 .addOperation(Operations.GET_VERSION, SwitchYardSubsystemGetVersion.INSTANCE)
-                .addOperation(Operations.LIST_APPLICATIONS, SwitchYardSubsystemListApplications.INSTANCE)
+                /*.addOperation(Operations.LIST_APPLICATIONS, SwitchYardSubsystemListApplications.INSTANCE)
                 .addOperation(Operations.LIST_REFERENCES, SwitchYardSubsystemListReferences.INSTANCE)
                 .addOperation(Operations.LIST_SERVICES, SwitchYardSubsystemListServices.INSTANCE)
                 .addOperation(Operations.READ_APPLICATION, SwitchYardSubsystemReadApplication.INSTANCE)
@@ -130,7 +131,7 @@ public class SwitchYardExtension implements Extension {
                 .addOperation(Operations.RESET_METRICS, SwitchYardSubsystemResetMetrics.INSTANCE)
                 .addOperation(Operations.STOP_GATEWAY, SwitchYardSubsystemStopGateway.INSTANCE)
                 .addOperation(Operations.START_GATEWAY, SwitchYardSubsystemStartGateway.INSTANCE)
-                .addOperation(Operations.UPDATE_THROTTLING, SwitchYardSubsystemUpdateThrottling.INSTANCE)
+                .addOperation(Operations.UPDATE_THROTTLING, SwitchYardSubsystemUpdateThrottling.INSTANCE)*/
                 .pushChild(securityConfigsResource).pop()
                 .pushChild(modulesResource).pop()
                 .pushChild(extensionsResource).pop()
@@ -145,17 +146,5 @@ public class SwitchYardExtension implements Extension {
     @Override
     public void initializeParsers(final ExtensionParsingContext context) {
         context.setSubsystemXmlMapping(SUBSYSTEM_NAME, SwitchYardExtension.NAMESPACE, SwitchYardSubsystemReader.getInstance());
-    }
-
-    /**
-     * Create an Add subsystem operation.
-     * 
-     * @return the operation node
-     */
-    public static ModelNode createAddSubsystemOperation() {
-        final ModelNode subsystem = new ModelNode();
-        subsystem.get(OP).set(ADD);
-        subsystem.get(OP_ADDR).add(ModelDescriptionConstants.SUBSYSTEM, SUBSYSTEM_NAME);
-        return subsystem;
     }
 }
